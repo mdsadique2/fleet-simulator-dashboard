@@ -1,4 +1,5 @@
 import { Flex, Space, Table, Tag } from 'antd';
+import { Stats } from './cells/Stats';
 
 const { Column, ColumnGroup } = Table;
 
@@ -39,6 +40,14 @@ const columns = [
     title: 'Message',
     key: 'message',
     dataIndex: 'message',
+  },
+  {
+    title: 'Stats',
+    dataIndex: 'payload',
+    key: 'payload',
+    render: (_text, record) => {
+      return <Stats row={record} />;
+    },
   },
 ];
 
