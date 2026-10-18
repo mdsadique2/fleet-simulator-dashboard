@@ -1,4 +1,4 @@
-export type BatteryLevel = 'critical' | 'average' | 'full';
+export type BatteryLevel = 'critical' | 'average' | 'full'| '20' | '40' | '60' | '80';
 export type TempLevel = 'normal' | 'average' | 'critical';
 export type SpeedLevel = 'normal' | 'high';
 
@@ -18,6 +18,10 @@ export function getBatteryLevel(
 
   if (p < criticalBelow) return 'critical';
   if (p >= fullFrom) return 'full';
+  if (p>=20 && p<30) return '20';
+  if (p>=30 && p<40) return '40';
+  if (p>=40 && p<60) return '60';
+  if (p>=60 && p<80) return '80';
   return 'average';
 }
 

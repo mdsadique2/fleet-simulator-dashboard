@@ -1,30 +1,23 @@
-import { Layout, Menu, theme } from 'antd';
+import { Layout, theme, ConfigProvider, Switch } from 'antd';
 import { BrowserRouter } from 'react-router-dom';
-
 import { Navigations, AppRoutes } from './router/router';
+import { useState } from 'react';
+import './App.css'
 
-const { Content, Footer, Sider } = Layout;
-
-const siderStyle: React.CSSProperties = {
-  overflow: 'auto',
-  height: '100vh',
-  position: 'sticky',
-  insetInlineStart: 0,
-  top: 0,
-  scrollbarWidth: 'thin',
-  scrollbarGutter: 'stable',
-};
+const { Content, Footer, Header } = Layout;
 
 export default function App() {
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const AppSider = () => (
-    <Sider style={siderStyle}>
-      <div className="demo-logo-vertical">FleetCon</div>
-      <Navigations />
-    </Sider>
+  const AppHeader = () => (
+    <Header className='appHeader'>
+      <div className='logo'>
+        FleetConsole
+      </div>
+      <div className='actions'>
+        <Switch size="small" value={isDarkMode} onChange={setIsDarkMode} />
+      </div>
+    </Header>
   );
 
   const PageLayout = () => (
@@ -38,11 +31,17 @@ export default function App() {
   );
 
   return (
+    <ConfigProvider
+      theme={{
+        algorithm: isDarkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
+      }}
+    >
     <BrowserRouter>
-      <Layout hasSider>
-        <AppSider />
+      <Layout>
+        <AppHeader />
         <PageLayout />
       </Layout>
     </BrowserRouter>
+    </ConfigProvider>
   );
 }

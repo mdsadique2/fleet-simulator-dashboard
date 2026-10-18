@@ -3,16 +3,19 @@ import { initializeDatabase, type FleetDatabase } from '../../db';
 import { useVehicleState } from './useVehicleState';
 import { FleetTelemetrySimulator } from '../../classes/FleetTelemetrySimulator';
 
+const filterOption = ['critical', 'moderate', 'normal']
+
 export function useDashboard() {
   const [database, setDatabase] = useState<FleetDatabase | null>(null);
   const [revision, setRevision] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [rowsToShow, setRowsToShow] = useState(filterOption);
 
   const simulator = useRef(null);
 
-  const BATCH_SIZE = 20; // configurable
-  const { rows, ingest, pending } = useVehicleState(BATCH_SIZE);
+  const BATCH_SIZE = 50; // configurable
+  const { rows, ingest, pending, clearRows } = useVehicleState(BATCH_SIZE, rowsToShow);
 
   // 1. Initialize DuckDB and start the simulator.
   useEffect(() => {
@@ -92,7 +95,11 @@ export function useDashboard() {
     };
   }, [database, revision, ingest]);
 
-  console.log('rows', rows);
+
+  const onFilterUpdate = (val) => {
+    clearRows();
+    setRowsToShow(val);
+  }
 
   return {
     database,
@@ -101,5 +108,8 @@ export function useDashboard() {
     pending,
     stop,
     error,
+    rowsToShow,
+    onFilterUpdate,
+    filterOption,
   };
 }

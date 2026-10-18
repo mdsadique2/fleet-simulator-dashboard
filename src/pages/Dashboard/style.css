@@ -1,0 +1,20 @@
+.ant-table-wrapper .ant-table-thead > tr > th {
+  font-family: 'Inter', sans-serif; /* Change Font Family */
+  font-size: 14px;                  /* Change Font Size */
+  color: #1a1a1a;                   /* Change Text Color */
+  font-weight: 600;                 /* Change Weight if needed */
+}
+
+/* Customize the Table Body Cells */
+.ant-table-wrapper .ant-table-tbody > tr > td {
+  font-family: 'Inter', sans-serif; /* Change Font Family */
+  font-size: 14px;                  /* Change Font Size */
+  color: #888;                   /* Change Text Color */
+  font-weight: 400;                 /* Change Weight if needed */
+}
+
+.filters{
+    padding: 0 0 20px 0;
+    justify-content: end;
+    display: flex;
+}

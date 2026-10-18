@@ -1,3 +1,63 @@
+.colorRed {
+  background: var(--color-red);
+}
+
+.colorOrange {
+  background: var(--color-orange);
+} 
+.colorGreen {
+  background: var(--color-green);
+}
+
 .iconRow {
     display: flex;
+    padding: 4px;
+    vertical-align: middle;
+    color: var(--color-blue);
+}
+
+.iconRed {
+    color: var(--color-red);
+}
+.iconOrange {
+    color: var(--color-orange);
+}
+.iconGreen {
+    color: var(--color-green);
+}
+
+.rotate180 {
+    transform: rotate(180deg);
+}
+
+.dateTime {
+    display: flex;
+    padding: 4px;
+}
+
+.sent {
+    color: var(--color-blue);
+}
+.received {
+    color: var(--color-green);
+}
+
+.receivedIcon {
+    margin-top: -7px;
+}
+
+.rangeRow{
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+    justify-content: space-between;
+    vertical-align: middle;
+}
+
+.statusCell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    vertical-align: middle;
+    font-size: 22px;
 }

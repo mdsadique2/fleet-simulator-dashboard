@@ -121,8 +121,8 @@ function mergePackets(store: Map<string, Entry>, batch: Packet[]) {
 }
 
 // Deep copy so React sees new objects at every level.
-function snapshot(store: Map<string, Entry>): VehicleRow[] {
-  return Array.from(store.values()).map((e) => {
+function snapshot(store: Map<string, Entry>, rowsToShow): VehicleRow[] {
+  const arr =  Array.from(store.values()).map((e) => {
     const { battery_temp, soc } = e.row.payload.signals;
     // console.log('-----------mmmm', signal);
     const { status, reason, reasons, message } = getVehicleStatus(
@@ -139,6 +139,21 @@ function snapshot(store: Map<string, Entry>): VehicleRow[] {
       payload: JSON.parse(JSON.stringify(e.row.payload)),
     };
   });
+
+  if(rowsToShow === undefined || rowsToShow.length === 0){
+    return arr;
+  }
+
+  console.log("unfiltered",rowsToShow, arr)
+
+  const filterArr = arr.filter((e, i) => {
+    if(rowsToShow.indexOf(e.status) > -1) {
+      return e
+    }
+  })
+
+  console.log("filtered",rowsToShow, filterArr)
+  return filterArr
 }
 
 // For display only: { signals: { soc: 30 } } -> { "signals.soc": 30 }
@@ -155,7 +170,7 @@ export function flattenPayload(
   return out;
 }
 
-export function useVehicleState(batchSize = 20) {
+export function useVehicleState(batchSize = 20, rowsToShow) {
   const storeRef = useRef(new Map<string, Entry>()); // accumulated state, survives re-renders
   const bufferRef = useRef<Packet[]>([]); // packets waiting for a full batch
   const seenRef = useRef(new Set<string>()); // packet_ids already buffered
@@ -178,17 +193,21 @@ export function useVehicleState(batchSize = 20) {
       while (bufferRef.current.length >= batchSize) {
         mergePackets(storeRef.current, bufferRef.current.splice(0, batchSize));
       }
-      setRows(snapshot(storeRef.current));
+      setRows(snapshot(storeRef.current, rowsToShow));
     },
-    [batchSize]
+    [batchSize, rowsToShow]
   );
 
   // apply whatever is left in the buffer (fewer than batchSize packets)
   const flush = useCallback(() => {
     if (!bufferRef.current.length) return;
     mergePackets(storeRef.current, bufferRef.current.splice(0));
-    setRows(snapshot(storeRef.current));
+    setRows(snapshot(storeRef.current, rowsToShow));
   }, []);
 
-  return { rows, ingest, flush };
+  const clearRows = () => {
+    setRows([]);
+  }
+
+  return { rows, ingest, flush, clearRows };
 }
