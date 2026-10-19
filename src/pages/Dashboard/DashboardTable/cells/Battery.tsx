@@ -5,8 +5,8 @@ BatteryFull,BatteryHalf,
     Battery40,
     Battery60,
     Battery80,
-} from '../../../icons/icons';
-import {getBatteryLevel, type BatteryLevel} from '../../../appUtils/utils';
+} from '../../../../icons/icons';
+import {getBatteryLevel, type BatteryLevel} from '../../../../appUtils/utils';
 import './style.css'
 export function Battery({soc}) {
     const status: BatteryLevel = getBatteryLevel(soc)

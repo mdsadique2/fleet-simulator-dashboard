@@ -1,6 +1,6 @@
 import {  Truck,
     Van,
-    Car,} from '../../../icons/icons';
+    Car,} from '../../../../icons/icons';
 import { Link } from 'react-router-dom';
 import './style.css'
 

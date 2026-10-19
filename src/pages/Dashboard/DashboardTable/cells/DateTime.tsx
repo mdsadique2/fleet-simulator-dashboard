@@ -1,6 +1,6 @@
 import {
     ArrowOut,
-} from '../../../icons/icons';
+} from '../../../../icons/icons';
 import './style.css'
 export function DateTime({row}) {
     const eventDate = new Date(row.eventTime);

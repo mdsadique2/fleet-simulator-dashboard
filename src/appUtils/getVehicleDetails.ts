@@ -18,7 +18,8 @@ export const iconComponentMap = {
     Saab
 }
 
-export function getVehicleDetails(vehicleObj) {
+
+export function getVehicleDetails(vehicleObj: Record<string, any> | null) {
     if(vehicleObj === null) {
         return {}
     }
@@ -38,8 +39,8 @@ export function getVehicleDetails(vehicleObj) {
         { key: '6', label: 'VIN', children: vin },
         { key: '7', label: 'Chassis number', children: chassis_number },
         { key: '8', label: 'Registration number', children: registration_number },
-        { key: '9', label: 'Nominal battery (kWh)', children: nominal_battery_kwh },
-        { key: '10', label: 'Current max battery (kWh)', children: current_max_battery_kwh },
+        { key: '9', label: 'Nominal battery (kWh)', children: nominal_battery_kwh/1000 },
+        { key: '10', label: 'Current max battery (kWh)', children: current_max_battery_kwh/1000 },
         { key: '11', label: 'Odometer (km)', children: odometer_km },
         { key: '12', label: 'Max charge (kW)', children: max_charge_kw },
     ]
@@ -49,7 +50,7 @@ export function getVehicleDetails(vehicleObj) {
         { key: '16', label: 'Driver contact', children: driverContact },
     ]
 
-    const dealerDetails: DescriptionsProps['items'] = [
+    const dealerDetails = [
         { key: '13', label: 'Dealer name', children: dealerName },
         { key: '14', label: 'Dealer phone', children: dealerPhone },
     ];

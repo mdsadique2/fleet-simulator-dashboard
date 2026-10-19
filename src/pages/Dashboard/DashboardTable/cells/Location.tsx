@@ -1,4 +1,4 @@
-import {Location as LocationIcon} from '../../../icons/icons';
+import {Location as LocationIcon} from '../../../../icons/icons';
 
 export function Location({long, lat}) {
     return (

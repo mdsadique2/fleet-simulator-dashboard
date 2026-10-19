@@ -33,7 +33,7 @@ export default function App() {
   const PageLayout = () => (
     <Layout>
       {/* <Header style={{ padding: 0, background: colorBgContainer }} /> */}
-      <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
+      <Content style={{ margin: '24px 48px', overflow: 'initial' }}>
         <AppRoutes />
       </Content>
     </Layout>

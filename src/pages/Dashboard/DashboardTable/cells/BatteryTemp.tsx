@@ -1,6 +1,6 @@
 import {  ThermometerAlert,
-  Thermometer,} from '../../../icons/icons';
-import {getTempLevel, type TempLevel} from '../../../appUtils/utils';
+  Thermometer,} from '../../../../icons/icons';
+import {getTempLevel, type TempLevel} from '../../../../appUtils/utils';
 
 export function BatteryTemp({temp}) {
     const status: TempLevel = getTempLevel(temp)

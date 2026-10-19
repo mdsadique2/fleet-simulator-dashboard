@@ -1,18 +1,15 @@
-import { Table } from 'antd';
 import { Stats } from './cells/Stats';
 import {DateTime} from './cells/DateTime';
 import {Status} from './cells/Status';
 import {Title} from './cells/Title';
+import {Message} from './cells/Message'
 
-import './style.css'
-import { Link } from 'react-router-dom';
-
-const columns = [
+export const columns = [
   {
     title: 'Vehicle ID',
     dataIndex: 'vehicleId',
     key: 'vehicleId',
-    render: (id, row) => {
+    render: (_id, row) => {
       return  (<Title vehicleData={row.vehicleDetails}/>);
     },
   },
@@ -35,6 +32,8 @@ const columns = [
     key: 'message',
     dataIndex: 'message',
     width: 250,
+    render: (message, row) => <Message message={message} row={row}/>,
+    
   },
   {
     title: 'Stats',
@@ -46,13 +45,3 @@ const columns = [
     },
   },
 ];
-
-export function DashboardTable({ rows, loading }) {
-  return (
-    <div>
-      <Table columns={columns} dataSource={rows} className="table" pagination={false}
-        loading={loading} 
-      />
-    </div>
-  );
-}

@@ -1,5 +1,5 @@
-import { SpeedHigh, SpeedLow} from '../../../icons/icons';
-import {getSpeedLevel, type SpeedLevel} from '../../../appUtils/utils';
+import { SpeedHigh, SpeedLow} from '../../../../icons/icons';
+import {getSpeedLevel, type SpeedLevel} from '../../../../appUtils/utils';
 
 export function Speed({speed}) {
     const status: SpeedLevel = getSpeedLevel(speed)

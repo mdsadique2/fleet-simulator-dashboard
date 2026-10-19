@@ -1,10 +1,7 @@
 import './style.css';
-import {
-  LoadingOutlined,
-} from '@ant-design/icons';
 import { useDashboard } from './useDashboard';
 import { Checkbox } from 'antd';
-import { DashboardTable } from './DashboardTable';
+import { DashboardTable } from './DashboardTable/DashboardTable';
 const CheckboxGroup = Checkbox.Group;
 
 export function Dashboard() {

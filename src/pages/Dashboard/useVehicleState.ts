@@ -13,6 +13,11 @@ export type VehicleRow = {
   eventTime: string; // latest event time for this vehicle
   signalReceived: string; // latest received_at for this vehicle
   payload: Record<string, any>; // nested, e.g. { signals: { soc, lat, long, ... } }
+  status: string;
+  reason: string;
+  reasons: string[];
+  message: string;
+  vehicleDetails?: unknown;
 };
 
 type Entry = {
@@ -20,6 +25,10 @@ type Entry = {
   fieldTs: Record<string, number>; // event time (ms) per leaf path, e.g. "signals.soc"
   eventMs: number;
   receivedMs: number;
+  status: string;
+  reason: string;
+  reasons: string[];
+  message: string;
 };
 
 const toMs = (v: unknown): number => {
@@ -95,28 +104,28 @@ function mergePackets(store: Map<string, Entry>, batch: Packet[]) {
       store.set(p.vehicle_id, entry);
     }
 
-    const { battery_temp, soc } = entry.row.payload.signals || {};
+    const { battery_temp, soc } = entry?.row.payload.signals || {};
     const { status, reason, reasons, message } = getVehicleStatus(
       soc,
       battery_temp
     );
-    entry.status = status;
-    entry.message = message;
-    entry.reason = reason;
-    entry.reasons = reasons;
+    entry!.status = status;
+    entry!.message = message;
+    entry!.reason = reason || '';
+    entry!.reasons = reasons;
 
     const ev = toMs(p.event_time);
     const rc = toMs(p.received_at);
 
-    mergeDeep(entry.row.payload, incoming, entry.fieldTs, ev);
+    mergeDeep(entry!.row.payload, incoming, entry!.fieldTs, ev);
 
-    if (ev > entry.eventMs) {
-      entry.eventMs = ev;
-      entry.row.eventTime = new Date(ev).toISOString();
+    if (ev > entry!.eventMs) {
+      entry!.eventMs = ev;
+      entry!.row.eventTime = new Date(ev).toISOString();
     }
-    if (rc > entry.receivedMs) {
-      entry.receivedMs = rc;
-      entry.row.signalReceived = new Date(rc).toISOString();
+    if (rc > entry!.receivedMs) {
+      entry!.receivedMs = rc;
+      entry!.row.signalReceived = new Date(rc).toISOString();
     }
   }
 }

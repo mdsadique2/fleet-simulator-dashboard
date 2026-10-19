@@ -1,10 +1,10 @@
 import { Progress } from 'antd';
-import { Range as RangeIcon} from '../../../icons/icons';
 
 export function Range({totalRange = 1, rangeLeft = 0}) {
-    const percent = Math.abs(((rangeLeft / totalRange) * 100)).toFixed(0);
+    const percent = Math.round(Math.abs((rangeLeft / totalRange) * 100));
     let stroke= "#306317";
     let statusClass = 'iconGreen';
+    let status: 'exception' | 'normal' | 'success' = 'success';
     
 
     if(percent < 30) {
@@ -28,6 +28,7 @@ export function Range({totalRange = 1, rangeLeft = 0}) {
                         percent={percent}
                         percentPosition={{ align: 'end', type: 'outer' }}
                         strokeColor={stroke}
+                        status={status}
                         size="small"
                         type="circle"
                     />
