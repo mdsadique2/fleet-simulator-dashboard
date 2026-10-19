@@ -1,15 +1,15 @@
 import { SpeedHigh, SpeedLow} from '../../../../icons/icons';
 import {getSpeedLevel, type SpeedLevel} from '../../../../appUtils/utils';
-
-export function Speed({speed}) {
-    const status: SpeedLevel = getSpeedLevel(speed)
+import { HIGH, NORMAL } from '../../../../appUtils/consts';
+export function Speed({speed}: {speed: number}) {
+    const status: SpeedLevel|null = getSpeedLevel(speed)
     let Icon = SpeedLow;
     let statusClass = 'iconGreen';
 
-    if(status === 'high') {
+    if(status === HIGH) {
         Icon = SpeedHigh;
         statusClass = 'iconRed';
-    } else if(status === 'normal') {
+    } else if(status === NORMAL) {
         Icon = SpeedLow;
         statusClass = 'iconOrange';
     }

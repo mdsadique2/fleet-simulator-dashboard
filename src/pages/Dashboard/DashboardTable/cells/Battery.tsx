@@ -1,22 +1,18 @@
-import {
-    BatteryAlert,
-BatteryFull,BatteryHalf,
- Battery20,
-    Battery40,
-    Battery60,
-    Battery80,
-} from '../../../../icons/icons';
+import {BatteryAlert, BatteryFull, BatteryHalf, Battery20, Battery40, Battery60, Battery80} from '../../../../icons/icons';
 import {getBatteryLevel, type BatteryLevel} from '../../../../appUtils/utils';
+import { CRITICAL, FULL } from '../../../../appUtils/consts';
 import './style.css'
-export function Battery({soc}) {
-    const status: BatteryLevel = getBatteryLevel(soc)
+
+
+export function Battery({soc}: {soc: number}) {
+    const status: BatteryLevel | null = getBatteryLevel(soc)
     let Icon = BatteryHalf;
     let statusClass = 'iconGreen';
 
-    if(status === 'full') {
+    if(status === FULL) {
         Icon = BatteryFull;
         statusClass = 'iconGreen';
-    } else if(status === 'critical') {
+    } else if(status === CRITICAL) {
         Icon = BatteryAlert;
         statusClass = 'iconRed';
     } else if(status === '20') {

@@ -102,11 +102,10 @@ export function useDashboard() {
     database,
     loading,
     rows,
-    pending,
     stop,
     error,
     rowsToShow,
     onFilterUpdate,
-    filterOption,
+    filterOption: appFilterOption,
   };
 }

@@ -20,7 +20,6 @@ export function generateVehicleSeeds(): string {
       chassisNo,
       regNo,
       nominalCapacity,
-      healthPercentage,
       currentMaxCapacity,
       odometerKm,
       maxChargeKw,

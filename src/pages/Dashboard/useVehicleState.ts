@@ -131,7 +131,7 @@ function mergePackets(store: Map<string, Entry>, batch: Packet[]) {
 }
 
 // Deep copy so React sees new objects at every level.
-function snapshot(store: Map<string, Entry>, rowsToShow, allVehiclesData): VehicleRow[] {
+function snapshot(store: Map<string, Entry>, rowsToShow: String[], allVehiclesData): VehicleRow[] {
   const arr =  Array.from(store.values()).map((e) => {
     const { battery_temp, soc } = e.row.payload.signals;
     const { status, reason, reasons, message } = getVehicleStatus(

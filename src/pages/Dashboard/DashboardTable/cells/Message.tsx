@@ -1,14 +1,15 @@
 import { Tag } from 'antd';
+import { CRITICAL, MODERATE } from '../../../../appUtils/consts';
+
 
 export function Message({message, row}) {
     let color = 'green'
-    if (row.status === 'moderate'){
+    if (row.status === MODERATE){
         color = 'orange'
-    } else if(row.status === 'critical') {
+    } else if(row.status === CRITICAL) {
         color = 'red'
     }
     const messages = message.split(";")
-    // console.log(message, "-----", message.constructor);
     return (<>{
         messages.map((elm,i) => {
             return(

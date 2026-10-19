@@ -29,4 +29,10 @@
 
 .logs {
     background: #eee;
+    color: #666;
+    font-size: 12px;
+}
+
+.logs .critical{
+    color: rgb(142, 0, 0);
 }

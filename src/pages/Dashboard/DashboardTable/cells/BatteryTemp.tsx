@@ -1,14 +1,14 @@
-import {  ThermometerAlert,
-  Thermometer,} from '../../../../icons/icons';
+import {  ThermometerAlert, Thermometer} from '../../../../icons/icons';
 import {getTempLevel, type TempLevel} from '../../../../appUtils/utils';
+import { CRITICAL } from '../../../../appUtils/consts';
 
-export function BatteryTemp({temp}) {
-    const status: TempLevel = getTempLevel(temp)
+export function BatteryTemp({temp}: {temp: number}) {
+    const status: TempLevel|null = getTempLevel(temp)
     let Icon = Thermometer;
     let statusClass = 'iconGreen';
     if(status === 'normal') {
         Icon = Thermometer;
-    } else if(status === 'critical') {
+    } else if(status === CRITICAL) {
         Icon = ThermometerAlert;
         statusClass = 'iconRed';
     }

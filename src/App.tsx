@@ -21,11 +21,11 @@ export default function App() {
         FleetConsole
       </div>
       <div className='actions'>
+        <Navigations />
         <div className='switch'>
           <span>{isDarkMode ? <SunFilled /> : <MoonFilled />}</span>
           <Switch size="small" value={isDarkMode} onChange={setIsDarkMode} />
         </div>
-        <Navigations />
       </div>
     </Header>
   );

@@ -2,7 +2,6 @@
   display: flex;
   justify-content: space-between;
   color: #fff;
-  background: #1677ff;
 }
 
 .logo{
@@ -12,4 +11,16 @@
 .switch span {
   font-size: 16px;
   margin-right: 6px;
+}
+
+.actions {
+  display: flex;
+  width: 250px;
+  justify-content: space-between;
+
+}
+
+.switch{
+  display: flex;
+  align-items: center;
 }

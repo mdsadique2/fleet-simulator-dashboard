@@ -1,3 +1,5 @@
+import { CRITICAL, AVERAGE, FULL, NORMAL, HIGH } from "./consts";
+
 export type BatteryLevel = 'critical' | 'average' | 'full'| '20' | '40' | '60' | '80';
 export type TempLevel = 'normal' | 'average' | 'critical';
 export type SpeedLevel = 'normal' | 'high';
@@ -16,8 +18,8 @@ export function getBatteryLevel(
 
   const p = Math.min(100, Math.max(0, percent)); // clamp to 0-100
 
-  if (p < criticalBelow) return 'critical';
-  if (p >= fullFrom) return 'full';
+  if (p < criticalBelow) return CRITICAL;
+  if (p >= fullFrom) return FULL;
   if (p>=20 && p<30) return '20';
   if (p>=30 && p<40) return '40';
   if (p>=40 && p<60) return '60';
@@ -29,9 +31,9 @@ export function getBatteryLevel(
 export function getTempLevel(temp?: number | null): TempLevel | null {
   if (!isNum(temp)) return null; // no data yet
 
-  if (temp <= 45) return 'normal'; // up to 45
-  if (temp <= 60) return 'average'; // 46-60
-  return 'critical'; // above 60
+  if (temp <= 45) return NORMAL; // up to 45
+  if (temp <= 60) return AVERAGE; // 46-60
+  return CRITICAL; // above 60
 }
 
 export function getSpeedLevel(
@@ -40,5 +42,5 @@ export function getSpeedLevel(
 ): SpeedLevel | null {
   if (typeof speed !== 'number' || Number.isNaN(speed)) return null; // no data yet
 
-  return speed > highAbove ? 'high' : 'normal';
+  return speed > highAbove ? HIGH : NORMAL;
 }

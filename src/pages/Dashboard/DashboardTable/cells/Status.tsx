@@ -1,11 +1,13 @@
 import { CheckCircleFilled, ExclamationCircleFilled, WarningFilled } from '@ant-design/icons';
-export function Status({status}) {
+import { CRITICAL, MODERATE } from '../../../../appUtils/consts';
+
+export function Status({status}: {status: string}) {
     let Icon = CheckCircleFilled;
     let statusClass = 'iconGreen';
-    if(status === 'critical') {
+    if(status === CRITICAL) {
         Icon = WarningFilled;
         statusClass = 'iconRed';
-    } else if(status === 'moderate') {
+    } else if(status === MODERATE) {
         Icon = ExclamationCircleFilled;
         statusClass = 'iconOrange';
     }

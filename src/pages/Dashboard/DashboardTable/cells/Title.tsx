@@ -1,18 +1,10 @@
-import {  Truck,
-    Van,
-    Car,} from '../../../../icons/icons';
+import {  Truck, Van, Car,} from '../../../../icons/icons';
 import { Link } from 'react-router-dom';
 import './style.css'
 
 export function Title({vehicleData}) {
-      const {vehicle_id, color, make, type, year, 
-        vin, chassis_number, registration_number, 
-        nominal_battery_kwh, current_max_battery_kwh, 
-        odometer_km, max_charge_kw, dealerName, dealerPhone, 
-        driverName, driverContact, s_no} = vehicleData
-
+    const {vehicle_id, make, type} = vehicleData
     let Icon = Truck;
-
 
     if(type === 'car') {
         Icon = Car;
