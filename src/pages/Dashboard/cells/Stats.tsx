@@ -16,16 +16,14 @@ export function Stats({row}) {
     } = row.payload.signals;
 
     return (
-        <div>
-            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+        <div className='stats'>
+            <div>
                 <Battery soc={soc} />
                 <BatteryTemp temp={battery_temp} />
                 <Speed speed={speed} />
             </div>
-            {/* <Location long={longitude} lat={latitude} /> */}
-
             <Range totalRange={total_range_km} rangeLeft={range_remaining_km} />
-
+            {/* <Location long={longitude} lat={latitude} /> */}
         </div>
     )
 }

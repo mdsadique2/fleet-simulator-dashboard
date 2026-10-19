@@ -1,27 +1,20 @@
-import { Flex, Space, Table, Tag } from 'antd';
+import { Table } from 'antd';
 import { Stats } from './cells/Stats';
 import {DateTime} from './cells/DateTime';
 import {Status} from './cells/Status';
+import {Title} from './cells/Title';
+
 import './style.css'
-
-const { Column, ColumnGroup } = Table;
-
-interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
-}
+import { Link } from 'react-router-dom';
 
 const columns = [
   {
     title: 'Vehicle ID',
     dataIndex: 'vehicleId',
     key: 'vehicleId',
-    // render: (text) => {
-    //   return <a> {text}</a>;
-    // },
+    render: (id, row) => {
+      return  (<Title vehicleData={row.vehicleDetails}/>);
+    },
   },
   {
     title: 'Events Time',
@@ -47,17 +40,19 @@ const columns = [
     title: 'Stats',
     dataIndex: 'payload',
     key: 'payload',
-    width: 500,
+    width: 350,
     render: (_text, record) => {
       return <Stats row={record} />;
     },
   },
 ];
 
-export function DashboardTable({ rows }) {
+export function DashboardTable({ rows, loading }) {
   return (
     <div>
-      <Table columns={columns} dataSource={rows} className="table" pagination={false}/>
+      <Table columns={columns} dataSource={rows} className="table" pagination={false}
+        loading={loading} 
+      />
     </div>
   );
 }

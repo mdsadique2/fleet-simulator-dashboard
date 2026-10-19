@@ -86,6 +86,7 @@ function mergePackets(store: Map<string, Entry>, batch: Packet[]) {
           reason: '',
           reasons: [],
           message: '',
+          vehicleDetails: {}
         },
         fieldTs: {},
         eventMs: 0,
@@ -121,15 +122,13 @@ function mergePackets(store: Map<string, Entry>, batch: Packet[]) {
 }
 
 // Deep copy so React sees new objects at every level.
-function snapshot(store: Map<string, Entry>, rowsToShow): VehicleRow[] {
+function snapshot(store: Map<string, Entry>, rowsToShow, allVehiclesData): VehicleRow[] {
   const arr =  Array.from(store.values()).map((e) => {
     const { battery_temp, soc } = e.row.payload.signals;
-    // console.log('-----------mmmm', signal);
     const { status, reason, reasons, message } = getVehicleStatus(
       soc,
       battery_temp
     );
-
     return {
       ...e.row,
       status,
@@ -137,6 +136,7 @@ function snapshot(store: Map<string, Entry>, rowsToShow): VehicleRow[] {
       reasons,
       message,
       payload: JSON.parse(JSON.stringify(e.row.payload)),
+      vehicleDetails: allVehiclesData?.[e.row.vehicleId]
     };
   });
 
@@ -144,15 +144,12 @@ function snapshot(store: Map<string, Entry>, rowsToShow): VehicleRow[] {
     return arr;
   }
 
-  console.log("unfiltered",rowsToShow, arr)
-
   const filterArr = arr.filter((e, i) => {
     if(rowsToShow.indexOf(e.status) > -1) {
       return e
     }
   })
 
-  console.log("filtered",rowsToShow, filterArr)
   return filterArr
 }
 
@@ -177,7 +174,7 @@ export function useVehicleState(batchSize = 20, rowsToShow) {
   const [rows, setRows] = useState<VehicleRow[]>([]);
 
   const ingest = useCallback(
-    (packets: Packet[]) => {
+    (packets: Packet[], allVehiclesData) => {
       for (const p of packets) {
         if (seenRef.current.has(p.packet_id)) continue;
         seenRef.current.add(p.packet_id);
@@ -193,17 +190,17 @@ export function useVehicleState(batchSize = 20, rowsToShow) {
       while (bufferRef.current.length >= batchSize) {
         mergePackets(storeRef.current, bufferRef.current.splice(0, batchSize));
       }
-      setRows(snapshot(storeRef.current, rowsToShow));
+      setRows(snapshot(storeRef.current, rowsToShow, allVehiclesData));
     },
     [batchSize, rowsToShow]
   );
 
   // apply whatever is left in the buffer (fewer than batchSize packets)
-  const flush = useCallback(() => {
+  const flush = useCallback((allVehiclesData: Record<string, unknown>) => {
     if (!bufferRef.current.length) return;
     mergePackets(storeRef.current, bufferRef.current.splice(0));
-    setRows(snapshot(storeRef.current, rowsToShow));
-  }, []);
+    setRows(snapshot(storeRef.current, rowsToShow, allVehiclesData));
+  }, [rowsToShow]);
 
   const clearRows = () => {
     setRows([]);

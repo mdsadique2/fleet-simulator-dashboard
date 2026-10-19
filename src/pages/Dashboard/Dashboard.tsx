@@ -8,7 +8,7 @@ import { DashboardTable } from './DashboardTable';
 const CheckboxGroup = Checkbox.Group;
 
 export function Dashboard() {
-  const { pending, database, loading, rows, error, rowsToShow, filterOption, onFilterUpdate } = useDashboard();
+  const { pending, loading, rows, error, rowsToShow, filterOption, onFilterUpdate } = useDashboard();
   if (error) {
     return (
       <main>
@@ -23,7 +23,7 @@ export function Dashboard() {
       <div className='filters'>
         <CheckboxGroup options={filterOption} value={rowsToShow} onChange={onFilterUpdate} />
       </div>
-      <DashboardTable rows={rows} />
+      <DashboardTable rows={rows} loading={pending || loading}/>
     </main>
   );
 }

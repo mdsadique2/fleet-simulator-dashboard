@@ -51,7 +51,9 @@
     align-items: center;
     padding-left: 6px;
     justify-content: space-between;
+    justify-content: center;
     vertical-align: middle;
+    flex-direction: column;
 }
 
 .statusCell {
@@ -60,4 +62,27 @@
     justify-content: space-between;
     vertical-align: middle;
     font-size: 22px;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+    width: 250px;
+}
+
+
+.title{
+  display: flex;
+  font-size: 14px;
+  padding-left: 30px;
+}
+
+.title .text {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+}
+
+.title .icon svg {
+  width: 30px;
 }

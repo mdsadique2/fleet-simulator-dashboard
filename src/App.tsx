@@ -2,9 +2,15 @@ import { Layout, theme, ConfigProvider, Switch } from 'antd';
 import { BrowserRouter } from 'react-router-dom';
 import { Navigations, AppRoutes } from './router/router';
 import { useState } from 'react';
+import {
+  SunFilled,
+  MoonFilled
+} from '@ant-design/icons';
+
 import './App.css'
 
-const { Content, Footer, Header } = Layout;
+
+const { Content, Header } = Layout;
 
 export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -15,7 +21,11 @@ export default function App() {
         FleetConsole
       </div>
       <div className='actions'>
-        <Switch size="small" value={isDarkMode} onChange={setIsDarkMode} />
+        <div className='switch'>
+          <span>{isDarkMode ? <SunFilled /> : <MoonFilled />}</span>
+          <Switch size="small" value={isDarkMode} onChange={setIsDarkMode} />
+        </div>
+        <Navigations />
       </div>
     </Header>
   );
@@ -26,7 +36,6 @@ export default function App() {
       <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
         <AppRoutes />
       </Content>
-      <Footer style={{ textAlign: 'center' }}></Footer>
     </Layout>
   );
 

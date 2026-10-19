@@ -14,8 +14,8 @@ export function useDashboard() {
 
   const simulator = useRef(null);
 
-  const BATCH_SIZE = 50; // configurable
-  const { rows, ingest, pending, clearRows } = useVehicleState(BATCH_SIZE, rowsToShow);
+  const BATCH_SIZE = 100; // configurable
+  const { rows, ingest, flush, pending, clearRows } = useVehicleState(BATCH_SIZE, rowsToShow);
 
   // 1. Initialize DuckDB and start the simulator.
   useEffect(() => {
@@ -25,13 +25,16 @@ export function useDashboard() {
     async function start() {
       try {
         const db = await initializeDatabase();
-
         if (cancelled) return;
 
+        const packetCountResult = await db.conn.query(`
+          SELECT COUNT(*) AS packet_count
+          FROM telemetry_packets
+        `);
         setDatabase(db);
 
         simulator.current = new FleetTelemetrySimulator(db, {
-          vehicleCount: 50,
+          vehicleCount: 500,
           intervalMs: 1000,
 
           // 2. This runs after a batch has been committed.
@@ -43,10 +46,9 @@ export function useDashboard() {
 
         await simulator.current.start();
       } catch (err) {
-        throw err;
-        // if (!cancelled) {
-        //   setError(err instanceof Error ? err.message : String(err));
-        // }
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : String(err));
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -70,10 +72,10 @@ export function useDashboard() {
           SELECT packet_id, vehicle_id, event_time, received_at, payload_json
           FROM telemetry_packets
           ORDER BY received_at DESC
-          LIMIT 100
         `);
         if (cancelled) return;
 
+        const allVehiclesData = simulator.current.getAlleVehiclesMap();
         ingest(
           result.toArray().map((row: any) => ({
             packet_id: String(row.packet_id),
@@ -81,8 +83,10 @@ export function useDashboard() {
             event_time: row.event_time, // raw value, don't String() it
             received_at: row.received_at,
             payload_json: String(row.payload_json),
-          }))
+          })),
+          allVehiclesData
         );
+        flush(allVehiclesData);
       } catch (err) {
         if (!cancelled)
           setError(err instanceof Error ? err.message : String(err));
@@ -93,7 +97,7 @@ export function useDashboard() {
     return () => {
       cancelled = true;
     };
-  }, [database, revision, ingest]);
+  }, [database, revision, ingest, flush]);
 
 
   const onFilterUpdate = (val) => {

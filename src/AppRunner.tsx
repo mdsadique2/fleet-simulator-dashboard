@@ -44,7 +44,6 @@ export function AppRunner() {
 
           // 2. This runs after a batch has been committed.
           onCommitted: (batch) => {
-            console.log('Committed packet count:', batch.length);
             setRevision((current) => current + 1);
           },
         });
@@ -176,39 +175,6 @@ export function AppRunner() {
       </p>
       <p>Latest stored packets shown: {packets.length}</p>
 
-      {/* <table>
-        <thead>
-          <tr>
-            <th>Packet ID</th>
-            <th>Vehicle</th>
-            <th>Event time</th>
-            <th>Received at</th>
-            <th>Signals</th>
-          </tr>
-        </thead>
-        <tbody>
-          {packets.map((packet) => {
-            const payload = JSON.parse(packet.payload_json);
-            // console.log('-------');
-            // console.log(payload);
-            // console.log('--------');
-            return (
-              <tr key={packet.packet_id}>
-                <td>{packet.packet_id}</td>
-                <td>{packet.vehicle_id}</td>
-                <td>{packet.event_time}</td>
-                <td>{packet.received_at}</td>
-                <td>
-                  {Object.entries(payload.signals)
-                    .map(([key, value]) => `${key}: ${value}`)
-                    .join(', ')}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table> */}
-
       <table>
         <thead>
           <tr>
@@ -221,9 +187,6 @@ export function AppRunner() {
         <tbody>
           {rows.map((row) => {
             const payload = row.payload;
-            // console.log('-------');
-            // console.log(payload);
-            // console.log('--------');
             return (
               <tr key={row.vehicleId}>
                 <td>{row.vehicleId}</td>

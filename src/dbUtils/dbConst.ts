@@ -5,9 +5,9 @@ export const areaCodes = [
 export const vehicleTypes = ['car', 'van', 'truck'];
 
 export const carMakes = {
-  car: ['Tesla', 'Volkswagen', 'Hyundai', 'Ford', 'BMW'],
-  van: ['Ford', 'Volkswagen', 'Mercedes-Benz', 'Rivian'],
-  truck: ['Tesla', 'Rivian', 'Ford', 'Chevrolet'],
+  car: ['Tesla', 'Volkswagen', 'Hyundai', 'Volvo', 'Mitsubishi'],
+  van: ['Mitsubishi', 'Volkswagen', 'Mitsubishi', 'Volvo'],
+  truck: ['Tesla', 'Volvo', 'Saab', 'Mitsubishi'],
 };
 
 export const colors = [

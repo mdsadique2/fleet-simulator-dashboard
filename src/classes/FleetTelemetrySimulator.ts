@@ -1,4 +1,8 @@
 import type { FleetDatabase } from '../db';
+import {
+  MAX_TELEMETRY_PACKETS,
+  saveTelemetryPackets,
+} from '../dbUtils/telemetryPacketStore';
 
 export type TelemetryPacket = {
   packetId: string;
@@ -18,22 +22,24 @@ type SimulatorOptions = {
 };
 
 export class FleetTelemetrySimulator {
+  private db: FleetDatabase['db'];
   private conn: FleetDatabase['conn'];
   private vehicleCount: number;
   private intervalMs: number;
   private onCommitted: SimulatorOptions['onCommitted'];
 
   private timer: ReturnType<typeof setInterval> | undefined;
-  private sequence = 0;
   private runningTick = false;
   private stopped = new Set<number>();
   private backlog: TelemetryPacket[] = [];
   private vehicleIds: string[] = [];
+  private vehicleMap: Record<string, unknown> = {};
 
   constructor(
     database: FleetDatabase,
     { vehicleCount = 50, intervalMs = 1000, onCommitted }: SimulatorOptions
   ) {
+    this.db = database.db;
     this.conn = database.conn;
     this.vehicleCount = vehicleCount;
     this.intervalMs = intervalMs;
@@ -46,9 +52,13 @@ export class FleetTelemetrySimulator {
   }
 
   private async getAllVehicleIds() {
-    const result = await this.conn.query(`SELECT vehicle_id FROM vehicles`);
-    console.log('-----', result);
-    this.vehicleIds = result.toArray().map((row) => row.vehicle_id);
+    const result = await this.conn.query(`SELECT * FROM vehicles`);
+    this.vehicleIds = result.toArray().map((row) => {
+      const {vehicle_id, color, make, type, year, vin, chassis_number, registration_number, nominal_battery_kwh, current_max_battery_kwh, odometer_km, max_charge_kw, dealerName, dealerPhone, driverName, driverContact, s_no} = row
+      const vehicleObj = {vehicle_id, color, make, type, year, vin, chassis_number, registration_number, nominal_battery_kwh, current_max_battery_kwh, odometer_km, max_charge_kw, dealerName, dealerPhone, driverName, driverContact, s_no}
+      this.vehicleMap[vehicle_id] = vehicleObj
+      return vehicle_id
+    });
   }
 
   private async vehicleId(index: number) {
@@ -111,7 +121,7 @@ export class FleetTelemetrySimulator {
     const signals = variants[Math.floor(Math.random() * variants.length)]();
 
     return {
-      packetId: `pkt-${++this.sequence}`,
+      packetId: `pkt-${crypto.randomUUID()}`,
       vehicleId,
       eventTime: new Date(eventTime).toISOString(),
       signals,
@@ -176,11 +186,35 @@ export class FleetTelemetrySimulator {
         `);
       }
 
+      const packetCountResult = await this.conn.query(`
+        SELECT COUNT(*) AS packet_count
+        FROM telemetry_packets
+      `);
+      const packetCount = Number(
+        packetCountResult.toArray()[0]?.packet_count ?? 0
+      );
+      const packetsToDelete = packetCount - MAX_TELEMETRY_PACKETS;
+
+      if (packetsToDelete > 0) {
+        await this.conn.query(`
+          DELETE FROM telemetry_packets
+          WHERE packet_id IN (
+            SELECT packet_id
+            FROM telemetry_packets
+            ORDER BY received_at ASC, packet_id ASC
+            LIMIT ${packetsToDelete}
+          )
+        `);
+      }
+
       await this.conn.query('COMMIT');
     } catch (error) {
       await this.conn.query('ROLLBACK');
       throw error;
     }
+
+    await saveTelemetryPackets(inserted);
+    await this.db.flushFiles();
 
     // Notify React only after a successful commit.
     if (inserted.length) {
@@ -237,6 +271,10 @@ export class FleetTelemetrySimulator {
     } finally {
       this.runningTick = false;
     }
+  }
+
+  getAlleVehiclesMap(): Record<string, unknown> {
+    return {...this.vehicleMap}
   }
 
   async start() {

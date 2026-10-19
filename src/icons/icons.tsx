@@ -16,8 +16,13 @@ import Car from '../svgs/car.svg?react';
 import Location from '../svgs/location.svg?react';
 import ArrowOut from '../svgs/arrow_outward.svg?react';
 import Range from '../svgs/range.svg?react';
-
-
+import Hyundai from '../svgs/hyundai.svg?react';
+import Mitsubishi from '../svgs/mitsubishi.svg?react';
+import Nissan from '../svgs/nissan.svg?react';
+import Tesla from '../svgs/tesla.svg?react';
+import Volkswagen from '../svgs/volkswagen.svg?react';
+import Volvo from '../svgs/volvo.svg?react';
+import Saab from '../svgs/saab.svg?react';
 
 export {
     Battery20,
@@ -36,5 +41,12 @@ export {
     Car,
     Location,
     ArrowOut,
-    Range
+    Range,
+    Hyundai,
+    Mitsubishi,
+    Nissan,
+    Tesla,
+    Volkswagen,
+    Volvo,
+    Saab
 }

@@ -1,10 +1,6 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-// import { AppRunner } from '../AppRunner';
-
 import { Dashboard } from '../pages/Dashboard/Dashboard';
-// 1. Define your page components
-const Vehicle = () => <h2>ℹ️ Vehicle</h2>;
-const NotFound = () => <h2>⚠️ 404 - Page Not Found</h2>;
+import { Vehicle } from '../pages/Vehicle/Vehicle';
 
 export const Navigations = () => (
   <nav>
@@ -14,10 +10,19 @@ export const Navigations = () => (
   </nav>
 );
 
+const NotFound = () => {
+  return (
+    <>
+      <h2>⚠️ 404 - Page Not Found</h2>
+      <Navigations />
+    </>
+  )
+};
+
 export const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Dashboard />} />
-    <Route path="/vehicle/:id" element={<Vehicle />} />
+    <Route path="/vehicle/:vehicleId" element={<Vehicle />} />
     {/* Catch-all route for any undefined URLs */}
     <Route path="*" element={<NotFound />} />
   </Routes>

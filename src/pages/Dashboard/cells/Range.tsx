@@ -24,16 +24,15 @@ export function Range({totalRange = 1, rangeLeft = 0}) {
     return (
         <div className={`rangeRow`}>
             <div className={`iconRow ${statusClass}`}>
-                <div style={{width: '250px', marginLeft: '2px'}}>
                     <Progress
                         percent={percent}
                         percentPosition={{ align: 'end', type: 'outer' }}
                         strokeColor={stroke}
                         size="small"
+                        type="circle"
                     />
-                </div>
             </div>
-            <div className={`${statusClass}`}>{rangeLeft} of {totalRange} km</div>
+            <div className={`${statusClass}`}>Range: {rangeLeft} of {totalRange} km</div>
         </div>
     )
 }

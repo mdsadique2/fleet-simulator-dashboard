@@ -43,8 +43,8 @@ export function generateVehicleSeeds(): string {
       ${currentMaxCapacity},
       ${odometerKm},
       ${maxChargeKw},
-      '${dealer.name}',
-      '${dealer.phone}',
+      '${dealer?.name}',
+      '${dealer?.phone}',
       '${driverName}',
       '${drivercontact}',
       '${sNo}'
